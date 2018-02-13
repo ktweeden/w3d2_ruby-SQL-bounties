@@ -23,11 +23,12 @@ class Bounty
     VALUES
     (
       $1, $2, $3, $4
-    );
+    )
+    RETURNING *;
     "
     values = [@name, @bounty_value, @favourite_weapon, @last_known_location]
     db.prepare("bounty", sql)
-    db.exec_prepared("bounty", values)
+    @id = db.exec_prepared("bounty", values)[0]['id'].to_i()
     db.close
   end
 
